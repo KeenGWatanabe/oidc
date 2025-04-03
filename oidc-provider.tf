@@ -4,3 +4,9 @@ resource "aws_iam_openid_connect_provider" "oidc-github" {
   client_id_list  = ["sts.amazonaws.com"] 
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
+
+# Add this output block to display the OIDC provider ARN
+output "github_oidc_provider_arn" {
+  value = aws_iam_openid_connect_provider.oidc-github.arn
+  description = "The ARN of the GitHub OIDC provider"
+}
