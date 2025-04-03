@@ -8,7 +8,7 @@ terraform/
 │   └── outputs.tf         # Output backend resource names/ARNs
 │
 ├── 1-oidc-provider/       # One-time apply (per AWS account)
-│   ├── main.tf            # GitHub OIDC provider
+│   ├── main.tf            # GitHub OIDC provider + IAM setup for GitHub
 │   └── outputs.tf         # Output OIDC ARN
 │
 └── 2-s3-bucket/           # Regular apply (your actual infrastructure)
