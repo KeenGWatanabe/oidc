@@ -21,8 +21,7 @@ If the output is empty, the OIDC provider isn’t set up yet.
 ### **2. Get Full OIDC Provider Details**
 If the provider exists, fetch its configuration:
 ```bash
-aws iam get-open-id-connect-provider \
-  --open-id-connect-provider-arn "arn:aws:iam::YOUR_ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+aws iam get-open-id-connect-provider --open-id-connect-provider-arn "arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com"
 ```
 **Key Fields to Verify**:
 - `Url`: Should match `https://token.actions.githubusercontent.com`
