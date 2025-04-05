@@ -13,14 +13,16 @@ resource "aws_iam_role" "github_actions" {
     "Version": "2012-10-17",
     "Statement": [{
       "Effect": "Allow",
-      "Principal": { "Federated": "arn:aws:iam::255945442255:role/github-actions-role" }, # aws_iam_openid_connect_provider.github.arn
+      "Principal": { 
+        "Federated": "arn:aws:iam::255945442255:role/github-actions-role" 
+        }, # aws_iam_openid_connect_provider.github.arn
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": { 
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com" 
         },
         "StringLike": { 
-          "token.actions.githubusercontent.com:sub": "repo:KeenGWatanabe/odic:ref:refs/heads/main" 
+          "token.actions.githubusercontent.com:sub": "repo:KeenGWatanabe/odic:*" 
         }
       }
     }]
@@ -29,17 +31,31 @@ resource "aws_iam_role" "github_actions" {
 
 
 # Step 3 Assign permissions
-resource "aws_iam_role_policy_attachment" "github_actions" {
-  role       = aws_iam_role.github_actions.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess" # Start broad, then restrict
-}
-
-  
+# resource "aws_iam_role_policy_attachment" "github_actions" {
+#   role       = aws_iam_role.github_actions.name
+#   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess" # Start broad, then restrict
+# }
 # Step 3.1 Policy attachements (additional polices added)
-resource "aws_iam_role_policy_attachment" "dynamodb" {
-  role       = aws_iam_role.github_actions.name  
-  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess" 
+# resource "aws_iam_role_policy_attachment" "dynamodb" {
+#   role       = aws_iam_role.github_actions.name  
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess" 
+# }
+
+resource "aws_iam_policy" "github_actions" {
+  name = "github-actions-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = ["s3:*", "dynamodb:*"] # Customize as needed
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
 }
+  
+
 
 # Step4 reference ARN role in GH workflows
 output "github_oidc_provider_arn" {
