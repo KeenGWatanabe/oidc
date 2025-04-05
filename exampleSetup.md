@@ -8,11 +8,11 @@ terraform/
 │   └── outputs.tf         # Output backend resource names/ARNs
 │
 ├── 1-oidc-provider/       # One-time apply (per AWS account)
-│   ├── main.tf            # GitHub OIDC provider + IAM setup for GitHub
-│   └── outputs.tf         # Output OIDC ARN
+│   ├── main.tf            # 1.GitHub OIDC provider 2.IAM role for GitHub 3.IAM policy attach 4.yaml authenticate
+│   └── outputs.tf         
 │
 └── 2-s3-bucket/           # Regular apply (your actual infrastructure)
-    ├── main.tf            # S3 bucket + IAM role for GitHub
+    ├── main.tf            # S3 bucket + IAM role for GitHub reference from step 1
     └── backend.tf         # References backend from step 0
 ```
 
