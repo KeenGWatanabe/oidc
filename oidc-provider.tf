@@ -1,8 +1,8 @@
 # Step 1 oidc.tf (run once per AWS account)
-resource "aws_iam_openid_connect_provider" "oidc-github" {
+resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com" # arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com 
-  client_id_list  = ["sts.amazonaws.com"] 
-  thumbprint_list = ["74f3a68f16524f15424927704c9506f55a9316bd"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"] #74f3a68f16524f15424927704c9506f55a9316bd from cli
+  client_id_list  = ["sts.amazonaws.com"]
 }
 
 # Step 2 Create IAM role for GitHub Actions
@@ -14,7 +14,7 @@ resource "aws_iam_role" "github_actions" {
     Statement = [{
       Effect: "Allow" 
       Principal = {
-        Federated = "arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com" #data.aws_iam_openid_connect_provider.github.arn # References existing provider
+        Federated = aws_iam_openid_connect_provider.github.arn # arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com
       }
       Action = "sts:AssumeRoleWithWebIdentity"
       Condition = {
@@ -22,12 +22,13 @@ resource "aws_iam_role" "github_actions" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringLike = {
-          "token.actions.githubusercontent.com:sub" = "repo:keengwatanabe/odic:*"
+          "token.actions.githubusercontent.com:sub" = "repo:KeenGWatanabe/odic:ref:refs/heads/main"
         }
       }
     }]
   })
 }
+
 
 # Step 3 Assign permissions
 resource "aws_iam_role_policy_attachment" "github_actions" {
@@ -39,12 +40,12 @@ resource "aws_iam_role_policy_attachment" "github_actions" {
 # Step 3.1 Policy attachements (additional polices added)
 resource "aws_iam_role_policy_attachment" "dynamodb" {
   role       = aws_iam_role.github_actions.name  
-  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess" # aws_iam_policy.terraform_lock_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess" 
 }
 
 # Step4 reference ARN role in GH workflows
 output "github_oidc_provider_arn" {
-  value = aws_iam_openid_connect_provider.oidc-github.arn
+  value = aws_iam_openid_connect_provider.github.arn
   description = "The ARN of the GitHub OIDC provider"
 }
 
