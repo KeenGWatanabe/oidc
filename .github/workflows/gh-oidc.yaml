@@ -5,13 +5,14 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  id-token: write   # Required for OIDC
-  contents: read    # Required to checkout code
-
 jobs:
   terraform:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,6 +23,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
           role-session-name: github-actions-${{ github.run_id }}
+          audience: sts.amazonaws.com
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
