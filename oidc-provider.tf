@@ -22,7 +22,7 @@ resource "aws_iam_role" "github_actions" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringLike = {
-          "token.actions.githubusercontent.com:sub" = "repo:keengwatanabe/m3.1-tf-workflows:*"
+          "token.actions.githubusercontent.com:sub" = "repo:keengwatanabe/odic:*"
         }
       }
     }]
