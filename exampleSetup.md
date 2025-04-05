@@ -125,3 +125,10 @@ jobs:
 ```
 
 This structure gives you a clean, maintainable setup where each component has a clear purpose and lifecycle.
+
+# Secrets Setup:
+
+Go to your GitHub repo Settings → Secrets → Actions
+Add these secrets:
+AWS_ROLE_ARN: The ARN from your Terraform output (aws_iam_role.github_actions.arn)
+AWS_REGION: Your AWS region (e.g., us-east-1)
