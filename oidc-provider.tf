@@ -1,7 +1,7 @@
 # Step 1 oidc.tf (run once per AWS account)
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com" # arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com 
-  thumbprint_list = ["74f3a68f16524f15424927704c9506f55a9316bd"] #74f3a68f16524f15424927704c9506f55a9316bd from cli
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"] #74f3a68f16524f15424927704c9506f55a9316bd from cli
   client_id_list  = ["sts.amazonaws.com"]
 }
 
@@ -14,7 +14,7 @@ resource "aws_iam_role" "github_actions" {
     Statement = [{
       Effect: "Allow" 
       Principal = {
-        Federated = aws_iam_openid_connect_provider.github.arn # arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com
+        Federated = "arn:aws:iam::255945442255:oidc-provider/token.actions.githubusercontent.com" # aws_iam_openid_connect_provider.github.arn 
       }
       Action = "sts:AssumeRoleWithWebIdentity"
       Condition = {
