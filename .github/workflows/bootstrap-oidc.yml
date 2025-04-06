@@ -18,7 +18,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.BOOTSTRAP_AWS_SECRET_ACCESS_KEY }}
 
       - name: Create OIDC Provider
-        run: terraform apply -auto-approve -target=aws_iam_openid_connect_provider.github
+        run: terraform apply -auto-approve # -target=aws_iam_openid_connect_provider.github
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.BOOTSTRAP_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.BOOTSTRAP_AWS_SECRET_ACCESS_KEY }}

@@ -8,6 +8,13 @@ https://github.com/keengwatanabe/tf-backend
 
 [how](./docs/accesskeys.md) step 1 "Temporary AWS Credentials"
 
+# step 4 confirm OIDC exists
+verify in AWS console, IAM > Identity Providers > token.actions.githubusercontent.com
+[confirm thumbprint](./docs/image.png)
+modify bootstrap-oidc.yml 
+# run WITHOUT -target to sync state
+`terraform apply -auto-approve`
+ 
 # step 3: place this s3 backend block in main.tf
 terraform {
   backend "s3" {
@@ -18,6 +25,6 @@ terraform {
   }
 }
 
-# step 4: put secrets key in github
+# step 4: put OIDC arn in github
 [secrets keys](./docs/accesskeys.md) step 2 for "Regular workflow"
 
