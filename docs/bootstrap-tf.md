@@ -1,8 +1,11 @@
+https://github.com/KeenGWatanabe/tf-bootstrap-user
+
 Here's a **minimal, secure Terraform configuration** to create a temporary IAM user with **only the permissions needed to bootstrap GitHub OIDC**:
 
 ### `bootstrap-user.tf`
+
 ```hcl
-# Temporary IAM user for OIDC bootstrap (delete after use)
+# CREATE Temporary IAM user for OIDC bootstrap (delete after use)
 resource "aws_iam_user" "oidc_bootstrap" {
   name = "github-oidc-bootstrap-user"
 }
